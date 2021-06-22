@@ -43,6 +43,25 @@ if __name__ == '__main__':
 
     print(dataframe_posts.rdd.getNumPartitions())
 
-    
+    dataframe_users.createOrReplaceTempView('users')
+    dataframe_posts.createOrReplaceTempView('posts')
+    dataframe_comments.createOrReplaceTempView('comments')
+
+    data_join = spark.sql(
+        '''
+            SELECT 
+                u.name as author,
+                p.body as postagem,
+                c.body as comentarios,
+                c.email
+            FROM users as u
+            INNER JOIN posts as p
+            ON u.id = p.userId
+            INNER JOIN comments as c
+            ON p.id == c.postId
+        '''
+    )
+
+    data_join.show()
 
     spark.stop()
