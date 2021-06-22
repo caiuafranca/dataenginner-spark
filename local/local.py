@@ -16,9 +16,9 @@ if __name__ == '__main__':
 
     spark.sparkContext.setLogLevel("INFO")
 
-    get_users = "./data/user.json"
-    get_posts = "./data/posts.json"
-    get_comments = "./data/comments.json"
+    get_users = "./raw_data/user.json"
+    get_posts = "./raw_data/posts.json"
+    get_comments = "./raw_data/comments.json"
 
     dataframe_users = spark.read \
                     .format('json') \
@@ -63,5 +63,7 @@ if __name__ == '__main__':
     )
 
     data_join.show()
+
+    data_join.write.parquet("./processing_data/process_data.parquet")
 
     spark.stop()
